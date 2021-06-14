@@ -1,0 +1,8 @@
+{
+  "short_name": "Cloud Storage",
+  "name": "Cloud Storage",
+  "start_url": ".",
+  "display": "fullscreen",
+  "theme_color": "#ff5b5f",
+  "background_color": "#dcd7ff"
+}

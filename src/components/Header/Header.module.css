@@ -1,0 +1,50 @@
+header {
+  padding: 1rem 3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #dcd7ff;
+}
+
+.logo {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
+.logo svg {
+  fill: #4635cd;
+  transition: all 0.5s ease;
+}
+
+.logo:hover svg {
+  fill: #ff5b5f;
+}
+
+nav {
+  display: grid;
+  gap: 1rem;
+  grid-auto-flow: column;
+  align-items: center;
+}
+
+.icon {
+  text-decoration: none;
+  display: flex;
+}
+
+.icon svg {
+  fill: #4635cd;
+  transition: all 0.5s ease;
+}
+
+.icon:hover svg {
+  fill: #ff5b5f;
+}
+
+/* phones and small devices */
+@media only screen and (max-width: 600px) {
+  header {
+    padding: 1rem;
+  }
+}

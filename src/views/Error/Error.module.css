@@ -1,0 +1,29 @@
+.main {
+  padding: 3rem;
+  display: grid;
+  gap: 1rem;
+}
+
+.error,
+.message {
+  text-align: center;
+}
+
+.error {
+  font-size: 10rem;
+  font-weight: 600;
+}
+
+.link {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* phones and small devices */
+@media only screen and (max-width: 600px) {
+  .main {
+    padding: 1rem;
+  }
+}
