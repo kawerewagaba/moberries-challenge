@@ -5,7 +5,7 @@ interface IAction {
   stage: number;
 }
 
-const stage = (stage = 0, action: IAction) => {
+const stage = (stage: number = 0, action: IAction) => {
   switch (action.type) {
     case UPDATE_STAGE:
       return action.stage;

@@ -1,0 +1,13 @@
+.total {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: max-content;
+  gap: 5px;
+  align-items: center;
+  text-transform: uppercase;
+  font-size: 1.2rem;
+}
+
+.value {
+  font-weight: 600;
+}

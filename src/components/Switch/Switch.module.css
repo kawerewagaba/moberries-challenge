@@ -1,0 +1,44 @@
+.wrapper {
+  display: grid;
+  gap: 1rem;
+  grid-auto-flow: column;
+  grid-auto-columns: max-content;
+  align-items: center;
+}
+
+.switch {
+  background: #eee;
+  width: 4rem;
+  border: 2px solid #000;
+  border-radius: 2rem;
+  cursor: pointer;
+}
+
+.on {
+  background: #a6fad0;
+}
+
+.off {
+  background: #fac9c3;
+}
+
+.button {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: #555;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.switch:hover .button {
+  background: #000;
+}
+
+.buttonOn {
+  left: calc(100% - 2rem);
+}
+
+.buttonOff {
+  left: 0;
+}

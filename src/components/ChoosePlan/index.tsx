@@ -1,54 +1,175 @@
-import { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { Component } from "react";
+import { connect } from "react-redux";
 import styles from "./ChoosePlan.module.css";
 import { baseAxios as axios } from "../../axios";
 import Spinner from "../../components/Spinner";
 import NextButton from "../../components/NextButton";
+import updateSubscription from "../../redux/actions/updateSubscription";
 import updateStage from "../../redux/actions/updateStage";
+import Plan from "../../components/Plan";
+import Total from "../Total";
+import SelectInput from "../SelectInput";
+import ToggleSwitch from "../Switch";
 
-interface IPlan {
-  duration_months: number;
-  price_usd_per_gb: number;
+interface IProps {
+  stage: number;
+  updateStage: (newStage: number) => void;
+  updateSubscription: (subscription: ISubscription) => void;
 }
 
-const ChoosePlan = () => {
-  const [plans, setPlans] = useState<IPlan[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+interface IState {
+  isLoading: boolean;
+  plans: IPlan[];
+  selectedPlan: IPlan | any;
+  storageOptions: number[];
+  selectedStorage: number | any;
+  upfront: boolean;
+}
 
-  useEffect(() => {
-    setIsLoading(true);
+class ChoosePlan extends Component<IProps, IState> {
+  constructor(props: IProps) {
+    super(props);
+
+    this.state = {
+      isLoading: false,
+      plans: [],
+      selectedPlan: {},
+      storageOptions: [5, 10, 50],
+      selectedStorage: 5,
+      upfront: false,
+    };
+  }
+
+  componentDidMount() {
+    this.setState({
+      isLoading: true,
+    });
 
     axios.get("/prices").then((res) => {
-      setIsLoading(false);
-      setPlans(res.data.subscription_plans);
-      console.log(res.data.subscription_plans);
+      this.setState({
+        isLoading: false,
+      });
+
+      // transform
+      const plans = res.data.subscription_plans.map((p: any) => ({
+        duration: p.duration_months,
+        price: p.price_usd_per_gb,
+      }));
+
+      this.setState({
+        plans,
+        selectedPlan: plans.find((p: any) => p.duration === 12),
+      });
     });
-  }, []);
+  }
 
-  const stage = useSelector((state: any) => state.stage);
-  const dispatch = useDispatch();
+  componentDidUpdate(prevProps: IProps, prevState: IState) {
+    const { selectedPlan, selectedStorage, upfront } = this.state;
 
-  const goToNext = () => {
-    // validate first
-    dispatch(updateStage(stage + 1));
-  };
+    if (
+      prevState.selectedPlan !== selectedPlan ||
+      prevState.selectedStorage !== selectedStorage ||
+      prevState.upfront !== upfront
+    ) {
+      this.props.updateSubscription({
+        plan: selectedPlan,
+        storage: selectedStorage,
+        upfront,
+      });
+    }
+  }
 
-  return (
-    <div className={styles.wrapper}>
-      {isLoading ? (
-        <Spinner />
-      ) : (
-        <>
-          {plans.map((plan, i) => (
-            <div key={i}>{plan.duration_months}</div>
-          ))}
-          <div onClick={goToNext}>
-            <NextButton label="Next" />
-          </div>
-        </>
-      )}
-    </div>
-  );
+  setPlan(plan: IPlan) {
+    this.setState({
+      selectedPlan: plan,
+    });
+  }
+
+  setStorage(storage: number) {
+    this.setState({
+      selectedStorage: storage,
+    });
+  }
+
+  setUpfront(option: boolean) {
+    this.setState({
+      upfront: option,
+    });
+  }
+
+  render() {
+    const {
+      isLoading,
+      plans,
+      selectedPlan,
+      storageOptions,
+      selectedStorage,
+      upfront,
+    } = this.state;
+
+    const { stage, updateStage } = this.props;
+
+    return (
+      <div className={styles.wrapper}>
+        {isLoading ? (
+          <Spinner />
+        ) : (
+          <>
+            <div className={styles.header}>Choose a plan</div>
+            <div className={styles.main}>
+              <div className={styles.mainHeader}>
+                <div className={styles.selectWrapper}>
+                  <div className={styles.selectHeader}>
+                    Select amount of storage
+                  </div>
+                  <SelectInput
+                    options={storageOptions}
+                    selected={selectedStorage}
+                    updateSelected={(option) => this.setStorage(option)}
+                  />
+                </div>
+                <div className={styles.switchWrapper}>
+                  <div className={styles.switchHeader}>Upfront payment</div>
+                  <ToggleSwitch
+                    selected={upfront}
+                    updateSelected={(option) => this.setUpfront(option)}
+                  />
+                </div>
+              </div>
+              <div className={styles.mainMain}>
+                {plans.map((plan, i) => (
+                  <Plan
+                    key={i}
+                    duration={plan.duration}
+                    price={plan.price}
+                    handleClick={() => this.setPlan(plan)}
+                    selected={plan === selectedPlan}
+                  />
+                ))}
+              </div>
+              <div className={styles.mainFooter}>
+                <Total />
+              </div>
+            </div>
+            <div className={styles.footer}>
+              <div onClick={() => updateStage(stage + 1)}>
+                <NextButton label="Next" />
+              </div>
+            </div>
+          </>
+        )}
+      </div>
+    );
+  }
+}
+
+const mapStateToProps = (state: any) => ({
+  stage: state.stage,
+});
+
+const mapDispatchToProps = {
+  updateSubscription,
+  updateStage,
 };
 
-export default ChoosePlan;
+export default connect(mapStateToProps, mapDispatchToProps)(ChoosePlan);
