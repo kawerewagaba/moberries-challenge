@@ -18,12 +18,12 @@ interface IUser {
 }
 
 interface ICard {
-  number: number;
+  number: string;
   expiry: IExpiry;
-  code: number;
+  code: string;
 }
 
 interface IExpiry {
-  month: number;
-  year: number;
+  month: string;
+  year: string;
 }

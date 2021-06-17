@@ -9,12 +9,12 @@ const initialState: IUser = {
   email: "",
   consent: false,
   card: {
-    number: 0,
+    number: "",
     expiry: {
-      month: 0,
-      year: 0,
+      month: "",
+      year: "",
     },
-    code: 0,
+    code: "",
   },
 };
 

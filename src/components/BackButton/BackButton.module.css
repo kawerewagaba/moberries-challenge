@@ -1,0 +1,18 @@
+.button {
+  display: grid;
+  grid-template-columns: auto auto;
+  align-items: center;
+  gap: 1rem;
+  cursor: pointer;
+}
+
+.icon {
+  fill: #4635cd;
+  width: 3rem;
+  height: 100%;
+  transition: all 500ms ease;
+}
+
+.button:hover .icon {
+  fill: #ff5b5f;
+}

@@ -1,0 +1,32 @@
+.wrapper {
+  position: relative;
+  display: grid;
+  gap: 3rem;
+}
+
+.header {
+  font-size: 1.5rem;
+}
+
+.main {
+  display: grid;
+  gap: 3rem;
+}
+
+.mainMain {
+  display: grid;
+  grid-auto-flow: column;
+  gap: 1rem;
+}
+
+.mainHeader {
+  display: flex;
+  justify-content: space-between;
+}
+
+.selectWrapper,
+.switchWrapper {
+  display: grid;
+  gap: 1rem;
+  grid-auto-rows: max-content;
+}

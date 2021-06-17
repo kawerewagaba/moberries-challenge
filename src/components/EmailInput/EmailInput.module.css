@@ -1,0 +1,21 @@
+.wrapper {
+  display: grid;
+  grid-template-rows: 1rem 1fr;
+  grid-gap: 0.5rem;
+}
+
+.label {
+  padding: 0 1rem;
+  text-transform: capitalize;
+  text-align: left;
+}
+
+.input {
+  background: #f9f8f8;
+  border: 2px solid #000;
+  padding: 1rem;
+}
+
+.inputNotValid {
+  border-color: #f00;
+}

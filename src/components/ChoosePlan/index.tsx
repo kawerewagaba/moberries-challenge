@@ -7,7 +7,7 @@ import NextButton from "../../components/NextButton";
 import updateSubscription from "../../redux/actions/updateSubscription";
 import updateStage from "../../redux/actions/updateStage";
 import Plan from "../../components/Plan";
-import Total from "../Total";
+import Subscription from "../Subscription";
 import SelectInput from "../SelectInput";
 import ToggleSwitch from "../Switch";
 
@@ -148,7 +148,7 @@ class ChoosePlan extends Component<IProps, IState> {
                 ))}
               </div>
               <div className={styles.mainFooter}>
-                <Total />
+                <Subscription />
               </div>
             </div>
             <div className={styles.footer}>
