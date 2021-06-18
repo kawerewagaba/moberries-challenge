@@ -16,7 +16,22 @@ const ConfirmOrder = () => {
   const dispatch = useDispatch();
 
   const [email, setEmail] = useState<string>(user.email);
-  const [isValidEmail, setIsValidEmail] = useState<boolean>();
+
+  const initialValidateEmail = () => {
+    if (email) {
+      const emailRegExp =
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+      const isValidEmail = emailRegExp.test(email.trim());
+
+      return isValidEmail;
+    }
+
+    return null;
+  };
+
+  const [isValidEmail, setIsValidEmail] =
+    useState<boolean | null>(initialValidateEmail);
 
   const [consent, setConsent] = useState<boolean>(user.consent);
 
@@ -35,33 +50,33 @@ const ConfirmOrder = () => {
   };
 
   const placeOrder = () => {
-    setIsLoading(true);
+    if (isValidEmail && consent) {
+      setIsLoading(true);
 
-    // if (isValidEmail && consent) {
-    dispatch(
-      updateUser({
-        ...user,
-        email,
-        consent,
-      })
-    );
+      dispatch(
+        updateUser({
+          ...user,
+          email,
+          consent,
+        })
+      );
 
-    axios
-      .post("/post", {
-        user,
-        subscription,
-      })
-      .then((res) => {
-        setIsLoading(false);
+      axios
+        .post("/post", {
+          user,
+          subscription,
+        })
+        .then((res) => {
+          setIsLoading(false);
 
-        dispatch(updateStage(stage + 1));
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    // } else {
-    //   validateEmail();
-    // }
+          dispatch(updateStage(stage + 1));
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      validateEmail();
+    }
   };
 
   const validateEmail = () => {
@@ -97,7 +112,10 @@ const ConfirmOrder = () => {
             handleChange={handleChange}
             handleBlur={() => validateEmail()}
           />
-          <div className={styles.terms} onClick={toggleConsent}>
+          <div
+            className={`${styles.terms} ${consent ? "" : styles.noConsent}`}
+            onClick={toggleConsent}
+          >
             <Checkbox checked={consent} handleClick={toggleConsent} /> I agree
             to the terms and conditions.
           </div>

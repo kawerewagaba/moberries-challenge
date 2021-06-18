@@ -37,6 +37,10 @@
   gap: 1rem;
 }
 
+.noConsent {
+  color: #f00;
+}
+
 /* phones and small devices */
 @media only screen and (max-width: 600px) {
   .wrapper {

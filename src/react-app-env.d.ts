@@ -29,7 +29,9 @@ interface IExpiry {
 }
 
 type CardValidation = {
-  isValidNumber: boolean | null;
-  isValidExpiry: boolean | null;
-  isValidCVV: boolean | null;
+  isValidNumber: Validation;
+  isValidExpiry: Validation;
+  isValidCVV: Validation;
 };
+
+type Validation = boolean | null;

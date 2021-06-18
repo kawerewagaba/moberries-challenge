@@ -15,36 +15,65 @@ const PaymentDetails = () => {
 
   const [card, setCard] = useState<ICard>(user.card);
 
-  const [isValidCard, setIsValid] = useState<CardValidation>({
-    isValidNumber: null,
-    isValidExpiry: null,
-    isValidCVV: null,
-  });
-
   const {
     number,
     expiry: { month, year },
     code,
   } = card;
 
+  const initialValidateNumber = () => {
+    if (number) {
+      return /^[0-9]{16}$/.test(number.replace(/\s/g, ""));
+    }
+    return null;
+  };
+
+  const initialValidateExpiry = () => {
+    if (month && year) {
+      const isValidExpiryMonth = /^0?[1-9]|1[0-2]$/.test(
+        month.replace(/\s/g, "")
+      );
+      const isValidExpiryYear = /^[0-9]{2}$/.test(year.replace(/\s/g, ""));
+
+      return isValidExpiryMonth && isValidExpiryYear;
+    }
+
+    return null;
+  };
+
+  const initialValidateCVV = () => {
+    if (code) {
+      const isValidCVV = /^[0-9]{3}$/.test(code.replace(/\s/g, ""));
+
+      return isValidCVV;
+    }
+
+    return null;
+  };
+
+  const [isValidNumber, setIsValidNumber] = useState<Validation>(
+    initialValidateNumber
+  );
+  const [isValidExpiry, setIsValidExpiry] = useState<Validation>(
+    initialValidateExpiry
+  );
+  const [isValidCVV, setIsValidCVV] = useState<Validation>(initialValidateCVV);
+
   const goToNext = () => {
-    console.log(isValidCard);
-    // const { isValidNumber, isValidExpiry, isValidCVV } = isValidCard;
+    if (isValidNumber && isValidExpiry && isValidCVV) {
+      dispatch(
+        updateUser({
+          ...user,
+          card,
+        })
+      );
 
-    // if (isValidNumber && isValidExpiry && isValidCVV) {
-    dispatch(
-      updateUser({
-        ...user,
-        card,
-      })
-    );
-
-    dispatch(updateStage(stage + 1));
-    // } else {
-    //   validateNumber();
-    //   validateExpiry();
-    //   validateCVV();
-    // }
+      dispatch(updateStage(stage + 1));
+    } else {
+      validateNumber();
+      validateExpiry();
+      validateCVV();
+    }
   };
 
   const goBack = () => {
@@ -114,10 +143,7 @@ const PaymentDetails = () => {
   const validateNumber = () => {
     const isValidNumber = /^[0-9]{16}$/.test(number.replace(/\s/g, ""));
 
-    setIsValid({
-      ...isValidCard,
-      isValidNumber,
-    });
+    setIsValidNumber(isValidNumber);
   };
 
   const validateExpiry = () => {
@@ -126,19 +152,13 @@ const PaymentDetails = () => {
     );
     const isValidExpiryYear = /^[0-9]{2}$/.test(year.replace(/\s/g, ""));
 
-    setIsValid({
-      ...isValidCard,
-      isValidExpiry: isValidExpiryMonth && isValidExpiryYear,
-    });
+    setIsValidExpiry(isValidExpiryMonth && isValidExpiryYear);
   };
 
   const validateCVV = () => {
     const isValidCVV = /^[0-9]{3}$/.test(code.replace(/\s/g, ""));
 
-    setIsValid({
-      ...isValidCard,
-      isValidCVV,
-    });
+    setIsValidCVV(isValidCVV);
   };
 
   return (
@@ -153,7 +173,7 @@ const PaymentDetails = () => {
         <div className={styles.mainMain}>
           <CardInput
             card={card}
-            valid={isValidCard}
+            valid={{ isValidNumber, isValidExpiry, isValidCVV }}
             handleChange={handleChange}
             handleBlur={handleBlur}
           />

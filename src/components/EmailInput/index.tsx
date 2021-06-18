@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 
 interface IProps {
   value: string;
-  valid?: boolean;
+  valid: boolean | null;
   handleChange: (event: ChangeEvent<HTMLInputElement>) => void;
   handleBlur: () => void;
 }
