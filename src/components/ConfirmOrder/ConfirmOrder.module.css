@@ -36,3 +36,10 @@
   align-items: center;
   gap: 1rem;
 }
+
+/* phones and small devices */
+@media only screen and (max-width: 600px) {
+  .wrapper {
+    gap: 2rem;
+  }
+}

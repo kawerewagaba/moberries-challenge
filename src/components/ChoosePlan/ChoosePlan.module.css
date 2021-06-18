@@ -30,3 +30,21 @@
   gap: 1rem;
   grid-auto-rows: max-content;
 }
+
+/* phones and small devices */
+@media only screen and (max-width: 600px) {
+  .wrapper {
+    gap: 2rem;
+  }
+
+  .mainHeader {
+    display: grid;
+    gap: 1rem;
+    justify-content: unset;
+  }
+
+  .mainMain {
+    grid-auto-flow: row;
+    grid-template-columns: 1fr 1fr;
+  }
+}
