@@ -15,8 +15,7 @@
 
 .mainMain {
   display: grid;
-  grid-auto-flow: column;
-  gap: 1rem;
+  gap: 2rem;
 }
 
 .mainHeader {
@@ -29,4 +28,11 @@
   display: grid;
   gap: 1rem;
   grid-auto-rows: max-content;
+}
+
+.terms {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 1rem;
 }

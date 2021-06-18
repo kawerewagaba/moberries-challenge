@@ -1,113 +1,21 @@
-import { ChangeEvent, FocusEvent, FC, useState } from "react";
+import { ChangeEvent, FocusEvent, FC } from "react";
 import styles from "./CardInput.module.css";
 
 interface IProps {
   card: ICard;
+  valid: CardValidation;
+  handleChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  handleBlur: (event: FocusEvent<HTMLInputElement>) => void;
 }
 
-interface IValid {
-  isValidNumber: boolean | null;
-  isValidExpiry: boolean | null;
-  isValidCVV: boolean | null;
-}
-
-const CardInput: FC<IProps> = ({ card }) => {
-  const [info, setInfo] = useState<ICard>(card);
-
-  const [isValid, setIsValid] = useState<IValid>({
-    isValidNumber: null,
-    isValidExpiry: null,
-    isValidCVV: null,
-  });
-
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const { name } = event.target;
-
-    switch (name) {
-      case "month":
-        setInfo({
-          ...info,
-          expiry: {
-            ...info.expiry,
-            month: event.target.value,
-          },
-        });
-        break;
-
-      case "year":
-        setInfo({
-          ...info,
-          expiry: {
-            ...info.expiry,
-            year: event.target.value,
-          },
-        });
-        break;
-
-      default:
-        setInfo({
-          ...info,
-          [event.target.name]: event.target.value,
-        });
-        break;
-    }
-  };
-
-  const handleBlur = (event: FocusEvent<HTMLInputElement>) => {
-    /**
-     * validate input on blur
-     */
-    const { name } = event.target;
-
-    switch (name) {
-      case "number":
-        validateNumber();
-        break;
-
-      case "cvv":
-        validateCVV();
-        break;
-
-      default:
-    }
-  };
-
-  const validateNumber = () => {
-    const isValidNumber = /^[0-9]{16}$/.test(number.replace(/\s/g, ""));
-
-    setIsValid({
-      ...isValid,
-      isValidNumber,
-    });
-  };
-
-  const validateExpiry = () => {
-    const isValidExpiryMonth = /^0?[1-9]|1[0-2]$/.test(
-      month.replace(/\s/g, "")
-    );
-    const isValidExpiryYear = /^[0-9]{2}$/.test(year.replace(/\s/g, ""));
-
-    setIsValid({
-      ...isValid,
-      isValidExpiry: isValidExpiryMonth && isValidExpiryYear,
-    });
-  };
-
-  const validateCVV = () => {
-    const isValidCVV = /^[0-9]{3}$/.test(code.replace(/\s/g, ""));
-
-    setIsValid({
-      ...isValid,
-      isValidCVV,
-    });
-  };
-
+const CardInput: FC<IProps> = ({ card, valid, handleChange, handleBlur }) => {
   const {
     number,
     expiry: { month, year },
     code,
-  } = info;
-  const { isValidNumber, isValidExpiry, isValidCVV } = isValid;
+  } = card;
+
+  const { isValidNumber, isValidExpiry, isValidCVV } = valid;
 
   return (
     <div className={styles.wrapper}>
@@ -135,7 +43,7 @@ const CardInput: FC<IProps> = ({ card }) => {
             name="month"
             value={month}
             onChange={handleChange}
-            onBlur={validateExpiry}
+            onBlur={handleBlur}
           />
           <span className={styles.expirySeparator}>/</span>
           <input
@@ -144,7 +52,7 @@ const CardInput: FC<IProps> = ({ card }) => {
             name="year"
             value={year}
             onChange={handleChange}
-            onBlur={validateExpiry}
+            onBlur={handleBlur}
           />
         </div>
         <input

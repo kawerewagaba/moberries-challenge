@@ -27,3 +27,9 @@ interface IExpiry {
   month: string;
   year: string;
 }
+
+type CardValidation = {
+  isValidNumber: boolean | null;
+  isValidExpiry: boolean | null;
+  isValidCVV: boolean | null;
+};

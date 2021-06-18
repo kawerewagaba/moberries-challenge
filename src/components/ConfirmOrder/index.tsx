@@ -7,28 +7,39 @@ import updateStage from "../../redux/actions/updateStage";
 import Subscription from "../Subscription";
 import BackButton from "../BackButton";
 import EmailInput from "../EmailInput";
+import Checkbox from "../Checkbox";
 
 const ConfirmOrder = () => {
-  const [email, setEmail] = useState<string>("");
-  const [isValidEmail, setIsValidEmail] = useState<boolean>();
+  const { stage, user } = useSelector((state: any) => state);
 
-  const {
-    stage,
-    user: { card },
-  } = useSelector((state: any) => state);
   const dispatch = useDispatch();
 
-  const goToNext = () => {
-    // validate first
+  const [email, setEmail] = useState<string>(user.email);
+  const [isValidEmail, setIsValidEmail] = useState<boolean>();
 
-    // dispatch(updateUser());
+  const [consent, setConsent] = useState<boolean>(user.consent);
 
-    dispatch(updateStage(stage + 1));
+  const goBack = () => {
+    dispatch(
+      updateUser({
+        ...user,
+        email,
+        consent,
+      })
+    );
+
+    dispatch(updateStage(stage - 1));
   };
 
   const placeOrder = () => {
-    if (isValidEmail) {
-      //
+    if (isValidEmail && consent) {
+      dispatch(
+        updateUser({
+          ...user,
+          email,
+          consent,
+        })
+      );
     } else {
       validateEmail();
     }
@@ -47,12 +58,16 @@ const ConfirmOrder = () => {
     setEmail(event.target.value);
   };
 
+  const toggleConsent = () => {
+    setConsent(!consent);
+  };
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.header}>Confirm your order</div>
       <div className={styles.main}>
         <div className={styles.mainHeader}>
-          <div onClick={() => dispatch(updateStage(stage - 1))}>
+          <div onClick={goBack}>
             <BackButton />
           </div>
         </div>
@@ -63,6 +78,10 @@ const ConfirmOrder = () => {
             handleChange={handleChange}
             handleBlur={() => validateEmail()}
           />
+          <div className={styles.terms} onClick={toggleConsent}>
+            <Checkbox checked={consent} handleClick={toggleConsent} /> I agree
+            to the terms and conditions.
+          </div>
         </div>
         <div className={styles.mainFooter}>
           <Subscription />
