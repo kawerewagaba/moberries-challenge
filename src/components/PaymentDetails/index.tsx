@@ -28,22 +28,23 @@ const PaymentDetails = () => {
   } = card;
 
   const goToNext = () => {
-    const { isValidNumber, isValidExpiry, isValidCVV } = isValidCard;
+    console.log(isValidCard);
+    // const { isValidNumber, isValidExpiry, isValidCVV } = isValidCard;
 
-    if (isValidNumber && isValidExpiry && isValidCVV) {
-      dispatch(
-        updateUser({
-          ...user,
-          card,
-        })
-      );
+    // if (isValidNumber && isValidExpiry && isValidCVV) {
+    dispatch(
+      updateUser({
+        ...user,
+        card,
+      })
+    );
 
-      dispatch(updateStage(stage + 1));
-    } else {
-      validateNumber();
-      validateExpiry();
-      validateCVV();
-    }
+    dispatch(updateStage(stage + 1));
+    // } else {
+    //   validateNumber();
+    //   validateExpiry();
+    //   validateCVV();
+    // }
   };
 
   const goBack = () => {

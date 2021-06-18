@@ -1,5 +1,6 @@
 import { useState, ChangeEvent } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { altAxios as axios } from "../../axios";
 import styles from "./ConfirmOrder.module.css";
 import PrimaryButton from "../../components/PrimaryButton";
 import updateUser from "../../redux/actions/updateUser";
@@ -10,7 +11,7 @@ import EmailInput from "../EmailInput";
 import Checkbox from "../Checkbox";
 
 const ConfirmOrder = () => {
-  const { stage, user } = useSelector((state: any) => state);
+  const { stage, user, subscription } = useSelector((state: any) => state);
 
   const dispatch = useDispatch();
 
@@ -32,17 +33,29 @@ const ConfirmOrder = () => {
   };
 
   const placeOrder = () => {
-    if (isValidEmail && consent) {
-      dispatch(
-        updateUser({
-          ...user,
-          email,
-          consent,
-        })
-      );
-    } else {
-      validateEmail();
-    }
+    // if (isValidEmail && consent) {
+    dispatch(
+      updateUser({
+        ...user,
+        email,
+        consent,
+      })
+    );
+
+    axios
+      .post("/post", {
+        user,
+        subscription,
+      })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    // } else {
+    //   validateEmail();
+    // }
   };
 
   const validateEmail = () => {
