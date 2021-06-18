@@ -13,6 +13,7 @@ import ToggleSwitch from "../Switch";
 
 interface IProps {
   stage: number;
+  subscription: ISubscription;
   updateStage: (newStage: number) => void;
   updateSubscription: (subscription: ISubscription) => void;
 }
@@ -20,9 +21,9 @@ interface IProps {
 interface IState {
   isLoading: boolean;
   plans: IPlan[];
-  selectedPlan: IPlan | any;
+  selectedPlan: IPlan;
   storageOptions: number[];
-  selectedStorage: number | any;
+  selectedStorage: number;
   upfront: boolean;
 }
 
@@ -30,13 +31,17 @@ class ChoosePlan extends Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
 
+    const {
+      subscription: { plan, storage, upfront },
+    } = props;
+
     this.state = {
       isLoading: false,
       plans: [],
-      selectedPlan: {},
+      selectedPlan: plan,
       storageOptions: [5, 10, 50],
-      selectedStorage: 5,
-      upfront: false,
+      selectedStorage: storage,
+      upfront: upfront,
     };
   }
 
@@ -165,6 +170,7 @@ class ChoosePlan extends Component<IProps, IState> {
 
 const mapStateToProps = (state: any) => ({
   stage: state.stage,
+  subscription: state.subscription,
 });
 
 const mapDispatchToProps = {
