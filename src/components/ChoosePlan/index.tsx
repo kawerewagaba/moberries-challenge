@@ -46,6 +46,8 @@ class ChoosePlan extends Component<IProps, IState> {
   }
 
   componentDidMount() {
+    const { selectedPlan } = this.state;
+
     this.setState({
       isLoading: true,
     });
@@ -63,7 +65,7 @@ class ChoosePlan extends Component<IProps, IState> {
 
       this.setState({
         plans,
-        selectedPlan: plans.find((p: any) => p.duration === 12),
+        selectedPlan: selectedPlan || plans.find((p: any) => p.duration === 12),
       });
     });
   }
@@ -148,7 +150,9 @@ class ChoosePlan extends Component<IProps, IState> {
                     duration={plan.duration}
                     price={plan.price}
                     handleClick={() => this.setPlan(plan)}
-                    selected={plan === selectedPlan}
+                    selected={
+                      JSON.stringify(plan) === JSON.stringify(selectedPlan)
+                    }
                   />
                 ))}
               </div>

@@ -7,10 +7,10 @@ interface IAction {
 
 const initialState: ISubscription = {
   plan: {
-    duration: 0,
-    price: 0,
+    duration: 12,
+    price: 2,
   },
-  storage: 0,
+  storage: 5,
   upfront: false,
 };
 
