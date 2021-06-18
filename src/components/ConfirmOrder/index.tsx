@@ -20,6 +20,8 @@ const ConfirmOrder = () => {
 
   const [consent, setConsent] = useState<boolean>(user.consent);
 
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const goBack = () => {
     dispatch(
       updateUser({
@@ -33,6 +35,8 @@ const ConfirmOrder = () => {
   };
 
   const placeOrder = () => {
+    setIsLoading(true);
+
     // if (isValidEmail && consent) {
     dispatch(
       updateUser({
@@ -48,7 +52,9 @@ const ConfirmOrder = () => {
         subscription,
       })
       .then((res) => {
-        console.log(res);
+        setIsLoading(false);
+
+        dispatch(updateStage(stage + 1));
       })
       .catch((err) => {
         console.log(err);
@@ -103,7 +109,7 @@ const ConfirmOrder = () => {
       <div className={styles.footer}>
         <PrimaryButton
           label="Confirm"
-          isLoading={false}
+          isLoading={isLoading}
           handleClick={placeOrder}
         />
       </div>

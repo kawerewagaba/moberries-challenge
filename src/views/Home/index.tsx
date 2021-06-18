@@ -5,6 +5,7 @@ import Header from "../../components/Header";
 import ChoosePlan from "../../components/ChoosePlan";
 import PaymentDetails from "../../components/PaymentDetails";
 import ConfirmOrder from "../../components/ConfirmOrder";
+import Success from "../../components/Success";
 
 const Home = () => {
   const stage = useSelector((state: any) => state.stage);
@@ -19,6 +20,9 @@ const Home = () => {
 
       case 2:
         return <ConfirmOrder />;
+
+      case 3:
+        return <Success />;
 
       default:
         return <ChoosePlan />;
