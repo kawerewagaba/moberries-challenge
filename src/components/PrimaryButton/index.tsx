@@ -10,9 +10,9 @@ interface IProps {
 }
 
 const PrimaryButton: FC<IProps> = ({ label, handleClick, isLoading }) => (
-  <button type="button" className={styles.button} onClick={handleClick}>
+  <div role="button" className={styles.button} onClick={handleClick}>
     {isLoading ? <Spinner /> : label}
-  </button>
+  </div>
 );
 
 PrimaryButton.propTypes = {

@@ -6,8 +6,8 @@
   height: 3rem;
   font-weight: 600;
   color: #fff;
-  display: grid;
-  grid-auto-flow: column;
+  display: flex;
+  justify-content: center;
   align-items: center;
   width: 10rem;
   transition: all 500ms ease;

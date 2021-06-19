@@ -13,6 +13,11 @@
   cursor: pointer;
 }
 
+.label {
+  display: flex;
+  justify-content: center;
+}
+
 .button svg {
   fill: #fff;
   transition: all 500ms ease;

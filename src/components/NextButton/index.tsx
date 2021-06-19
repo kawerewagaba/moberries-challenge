@@ -8,10 +8,10 @@ interface IProps {
 }
 
 const NextButton: FC<IProps> = ({ label }) => (
-  <button type="button" className={styles.button}>
-    {label}
+  <div role="button" className={styles.button}>
+    <div className={styles.label}>{label}</div>
     <NextIcon />
-  </button>
+  </div>
 );
 
 NextButton.propTypes = {
