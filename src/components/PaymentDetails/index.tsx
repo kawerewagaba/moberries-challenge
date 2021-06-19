@@ -7,6 +7,11 @@ import updateStage from "../../redux/actions/updateStage";
 import Subscription from "../Subscription";
 import CardInput from "../CardInput";
 import BackButton from "../BackButton";
+import {
+  numberValid,
+  expiryValid,
+  codeValid,
+} from "../../helpers/validateCard";
 
 const PaymentDetails = () => {
   const { stage, user } = useSelector((state: any) => state);
@@ -23,19 +28,15 @@ const PaymentDetails = () => {
 
   const initialValidateNumber = () => {
     if (number) {
-      return /^[0-9]{16}$/.test(number.replace(/\s/g, ""));
+      return numberValid(number);
     }
+
     return null;
   };
 
   const initialValidateExpiry = () => {
     if (month && year) {
-      const isValidExpiryMonth = /^0?[1-9]|1[0-2]$/.test(
-        month.replace(/\s/g, "")
-      );
-      const isValidExpiryYear = /^[0-9]{2}$/.test(year.replace(/\s/g, ""));
-
-      return isValidExpiryMonth && isValidExpiryYear;
+      return expiryValid(month, year);
     }
 
     return null;
@@ -43,9 +44,7 @@ const PaymentDetails = () => {
 
   const initialValidateCVV = () => {
     if (code) {
-      const isValidCVV = /^[0-9]{3}$/.test(code.replace(/\s/g, ""));
-
-      return isValidCVV;
+      return codeValid(code);
     }
 
     return null;
@@ -141,24 +140,15 @@ const PaymentDetails = () => {
   };
 
   const validateNumber = () => {
-    const isValidNumber = /^[0-9]{16}$/.test(number.replace(/\s/g, ""));
-
-    setIsValidNumber(isValidNumber);
+    setIsValidNumber(numberValid(number));
   };
 
   const validateExpiry = () => {
-    const isValidExpiryMonth = /^0?[1-9]|1[0-2]$/.test(
-      month.replace(/\s/g, "")
-    );
-    const isValidExpiryYear = /^[0-9]{2}$/.test(year.replace(/\s/g, ""));
-
-    setIsValidExpiry(isValidExpiryMonth && isValidExpiryYear);
+    setIsValidExpiry(expiryValid(month, year));
   };
 
   const validateCVV = () => {
-    const isValidCVV = /^[0-9]{3}$/.test(code.replace(/\s/g, ""));
-
-    setIsValidCVV(isValidCVV);
+    setIsValidCVV(codeValid(code));
   };
 
   return (

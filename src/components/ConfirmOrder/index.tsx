@@ -9,6 +9,7 @@ import Subscription from "../Subscription";
 import BackButton from "../BackButton";
 import EmailInput from "../EmailInput";
 import Checkbox from "../Checkbox";
+import emailValid from "../../helpers/validateEmail";
 
 const ConfirmOrder = () => {
   const { stage, user, subscription } = useSelector((state: any) => state);
@@ -19,12 +20,7 @@ const ConfirmOrder = () => {
 
   const initialValidateEmail = () => {
     if (email) {
-      const emailRegExp =
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-      const isValidEmail = emailRegExp.test(email.trim());
-
-      return isValidEmail;
+      return emailValid(email);
     }
 
     return null;
@@ -80,12 +76,7 @@ const ConfirmOrder = () => {
   };
 
   const validateEmail = () => {
-    const emailRegExp =
-      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-    const isValidEmail = emailRegExp.test(email.trim());
-
-    setIsValidEmail(isValidEmail);
+    setIsValidEmail(emailValid(email));
   };
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -110,7 +101,7 @@ const ConfirmOrder = () => {
             value={email}
             valid={isValidEmail}
             handleChange={handleChange}
-            handleBlur={() => validateEmail()}
+            handleBlur={validateEmail}
           />
           <div
             className={`${styles.terms} ${consent ? "" : styles.noConsent}`}
