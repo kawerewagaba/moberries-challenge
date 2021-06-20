@@ -2,13 +2,12 @@ import PrimaryButton from ".";
 import { render, screen } from "@testing-library/react";
 
 describe("PrimaryButton", () => {
-  const handleClick = () => {};
-  const props = { label: "Confirm", handleClick };
+  const props = { label: "Confirm", handleClick: () => {} };
 
   it("renders Confirm when not loading", () => {
     render(<PrimaryButton {...props} isLoading={false} />);
 
-    expect(screen.getByText("Confirm")).toBeTruthy();
+    expect(screen.getByText("Confirm")).toBeInTheDocument();
   });
 
   it("renders Spinner when loading", () => {

@@ -5,6 +5,6 @@ describe("NextButton", () => {
   render(<NextButton label="Next" />);
 
   it("renders Next", () => {
-    expect(screen.getByText("Next")).toBeTruthy();
+    expect(screen.getByText("Next")).toBeInTheDocument();
   });
 });
