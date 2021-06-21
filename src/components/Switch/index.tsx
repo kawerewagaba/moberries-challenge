@@ -11,10 +11,12 @@ const Switch: FC<IProps> = ({ selected, updateSelected }) => (
   <div className={styles.wrapper}>
     <div className={styles.label}>No</div>
     <div
+      data-testid="switch"
       className={`${styles.switch} ${selected ? styles.on : styles.off}`}
       onClick={() => updateSelected(!selected)}
     >
       <div
+        data-testid="button"
         className={`${styles.button} ${
           selected ? styles.buttonOn : styles.buttonOff
         }`}
