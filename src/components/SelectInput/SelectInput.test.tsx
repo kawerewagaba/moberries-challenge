@@ -14,15 +14,15 @@ describe("SelectInput", () => {
 
   it("shows the default option only", () => {
     expect(screen.getByText("2 GB")).toBeInTheDocument();
-    expect(screen.queryByText("1 GB")).toBeFalsy();
-    expect(screen.queryByText("3 GB")).toBeFalsy();
+    expect(screen.queryByText("1 GB")).toBeNull();
+    expect(screen.queryByText("3 GB")).toBeNull();
   });
 
   it("toggles all options when clicked", () => {
     // clicking the selected/default option should show the options container
     fireEvent.click(screen.getByText("2 GB"));
 
-    expect(screen.getAllByText("2 GB").length).toBe(2);
+    expect(screen.getAllByText("2 GB")).toHaveLength(2);
     expect(screen.getByText("1 GB")).toBeInTheDocument();
     expect(screen.getByText("3 GB")).toBeInTheDocument();
 
@@ -30,7 +30,7 @@ describe("SelectInput", () => {
     fireEvent.click(screen.getByText("1 GB"));
 
     expect(screen.getByText("2 GB")).toBeInTheDocument();
-    expect(screen.queryByText("1 GB")).toBeFalsy();
-    expect(screen.queryByText("3 GB")).toBeFalsy();
+    expect(screen.queryByText("1 GB")).toBeNull();
+    expect(screen.queryByText("3 GB")).toBeNull();
   });
 });

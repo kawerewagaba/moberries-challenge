@@ -52,22 +52,26 @@ class ChoosePlan extends Component<IProps, IState> {
       isLoading: true,
     });
 
-    axios.get("/prices").then((res) => {
-      this.setState({
-        isLoading: false,
-      });
+    axios
+      .get("/prices")
+      .then((res) => {
+        this.setState({
+          isLoading: false,
+        });
 
-      // transform
-      const plans = res.data.subscription_plans.map((p: any) => ({
-        duration: p.duration_months,
-        price: p.price_usd_per_gb,
-      }));
+        // transform
+        const plans = res.data.subscription_plans.map((p: any) => ({
+          duration: p.duration_months,
+          price: p.price_usd_per_gb,
+        }));
 
-      this.setState({
-        plans,
-        selectedPlan: selectedPlan || plans.find((p: any) => p.duration === 12),
-      });
-    });
+        this.setState({
+          plans,
+          selectedPlan:
+            selectedPlan || plans.find((p: any) => p.duration === 12),
+        });
+      })
+      .catch((err) => {});
   }
 
   componentDidUpdate(prevProps: IProps, prevState: IState) {
@@ -118,55 +122,53 @@ class ChoosePlan extends Component<IProps, IState> {
 
     return (
       <div className={styles.wrapper}>
-        {isLoading ? (
-          <Spinner />
-        ) : (
-          <>
-            <div className={styles.header}>Choose a plan</div>
-            <div className={styles.main}>
-              <div className={styles.mainHeader}>
-                <div className={styles.selectWrapper}>
-                  <div className={styles.selectHeader}>
-                    Select amount of storage
-                  </div>
-                  <SelectInput
-                    options={storageOptions}
-                    selected={selectedStorage}
-                    updateSelected={(option) => this.setStorage(option)}
-                  />
-                </div>
-                <div className={styles.switchWrapper}>
-                  <div className={styles.switchHeader}>Upfront payment</div>
-                  <ToggleSwitch
-                    selected={upfront}
-                    updateSelected={(option) => this.setUpfront(option)}
-                  />
-                </div>
+        <div className={styles.header}>Choose a plan</div>
+        <div className={styles.main}>
+          <div className={styles.mainHeader}>
+            <div className={styles.selectWrapper}>
+              <div className={styles.selectHeader}>
+                Select amount of storage
               </div>
-              <div className={styles.mainMain}>
-                {plans.map((plan, i) => (
-                  <Plan
-                    key={i}
-                    duration={plan.duration}
-                    price={plan.price}
-                    handleClick={() => this.setPlan(plan)}
-                    selected={
-                      JSON.stringify(plan) === JSON.stringify(selectedPlan)
-                    }
-                  />
-                ))}
-              </div>
-              <div className={styles.mainFooter}>
-                <Subscription />
-              </div>
+              <SelectInput
+                options={storageOptions}
+                selected={selectedStorage}
+                updateSelected={(option) => this.setStorage(option)}
+              />
             </div>
-            <div className={styles.footer}>
-              <div onClick={() => updateStage(stage + 1)}>
-                <NextButton label="Next" />
-              </div>
+            <div className={styles.switchWrapper}>
+              <div className={styles.switchHeader}>Upfront payment</div>
+              <ToggleSwitch
+                selected={upfront}
+                updateSelected={(option) => this.setUpfront(option)}
+              />
             </div>
-          </>
-        )}
+          </div>
+          <div className={styles.mainMain}>
+            {isLoading ? (
+              <Spinner />
+            ) : (
+              plans.map((plan, i) => (
+                <Plan
+                  key={i}
+                  duration={plan.duration}
+                  price={plan.price}
+                  handleClick={() => this.setPlan(plan)}
+                  selected={
+                    JSON.stringify(plan) === JSON.stringify(selectedPlan)
+                  }
+                />
+              ))
+            )}
+          </div>
+          <div className={styles.mainFooter}>
+            <Subscription />
+          </div>
+        </div>
+        <div className={styles.footer}>
+          <div onClick={() => updateStage(stage + 1)}>
+            <NextButton label="Next" />
+          </div>
+        </div>
       </div>
     );
   }

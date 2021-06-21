@@ -19,7 +19,9 @@ const Subscription = () => {
     <div className={styles.wrapper}>
       <div className={styles.total}>
         <div className={styles.currency}>usd</div>
-        <div className={styles.value}>{value}</div>
+        <div data-testid="total" className={styles.value}>
+          {value}
+        </div>
       </div>
       <div className={styles.summary}>
         {`Duration: ${duration} months / Storage: ${storage} GB / Payment: ${
