@@ -21,7 +21,7 @@ describe("ChoosePlan", () => {
     ).toBeInTheDocument();
 
     // calculated total: price * storage
-    expect(screen.getByTestId("total").textContent).toBe("10");
+    expect(screen.getByTestId("total")).toHaveTextContent("10");
   });
 
   it("reduces the total by 10% when upfront payment is on", () => {
@@ -31,6 +31,6 @@ describe("ChoosePlan", () => {
       screen.getByText("Duration: 12 months / Storage: 5 GB / Payment: Yes")
     ).toBeInTheDocument();
 
-    expect(screen.getByTestId("total").textContent).toBe("9");
+    expect(screen.getByTestId("total")).toHaveTextContent("9");
   });
 });
